@@ -5,8 +5,9 @@ from PIL import Image
 @st.cache_resource(show_spinner=False)
 def _get_detector():
     """
-    Load the AI image detector once and cache it across Streamlit reruns.
+    Load the AI image detector once and reuse it.
     """
+
     from transformers import pipeline
 
     detector = pipeline(
@@ -21,8 +22,6 @@ def _get_detector():
 def detect_ai_image(image):
     """
     Analyze an image for AI-generation indicators.
-
-    Returns the model's classification results.
     """
 
     if image is None:
@@ -32,11 +31,21 @@ def detect_ai_image(image):
         if not isinstance(image, Image.Image):
             image = Image.open(image)
 
+        # Convert to RGB
         image = image.convert("RGB")
+
+        # Prevent extremely large images from consuming excessive memory
+        max_size = 1600
+
+        if max(image.size) > max_size:
+            image.thumbnail((max_size, max_size))
 
         detector = _get_detector()
 
-        results = detector(image)
+        results = detector(
+            image,
+            top_k=2
+        )
 
         return results
 
@@ -48,9 +57,6 @@ def detect_ai_image(image):
 def detect_ai_video(frames):
     """
     Video AI detection is intentionally unavailable.
-
-    The installed detector is an image model and has not been
-    validated as a video-level detector.
     """
 
     if not frames:
