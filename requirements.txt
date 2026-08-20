@@ -1,14 +1,12 @@
-# Use CPU-only PyTorch wheels. The PyPI Linux torch wheel pulls CUDA packages,
-# which are unnecessary on Streamlit Community Cloud and can exhaust build resources.
---extra-index-url https://download.pytorch.org/whl/cpu
-
 streamlit==1.62.0
 easyocr==1.7.2
 ImageHash==4.3.0
-numpy==2.5.2
-Pillow==12.3.0
-opencv-python-headless==5.0.0.93
+numpy==2.2.6
+Pillow==11.3.0
+opencv-python-headless==4.10.0.84
 reportlab==4.2.0
-transformers==5.15.1
+transformers==4.57.1
+
+--extra-index-url https://download.pytorch.org/whl/cpu
 torch==2.7.1+cpu
 torchvision==0.22.1+cpu
