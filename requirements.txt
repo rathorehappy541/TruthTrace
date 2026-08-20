@@ -1,4 +1,4 @@
-﻿# Use CPU-only PyTorch wheels. The PyPI Linux torch wheel pulls CUDA packages,
+# Use CPU-only PyTorch wheels. The PyPI Linux torch wheel pulls CUDA packages,
 # which are unnecessary on Streamlit Community Cloud and can exhaust build resources.
 --extra-index-url https://download.pytorch.org/whl/cpu
 
