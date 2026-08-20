@@ -1,12 +1,17 @@
 import numpy as np
-from functools import lru_cache
+import streamlit as st
 
 
-@lru_cache(maxsize=1)
+@st.cache_resource
 def _get_reader():
-    """Initialize OCR only when an uploaded image needs it."""
+    """Load EasyOCR once and reuse it."""
     import easyocr
-    return easyocr.Reader(["en"], gpu=False)
+
+    return easyocr.Reader(
+        ["en"],
+        gpu=False,
+        verbose=False
+    )
 
 
 def extract_text(image):
@@ -16,7 +21,9 @@ def extract_text(image):
 
     image_array = np.array(image)
 
-    results = _get_reader().readtext(image_array)
+    reader = _get_reader()
+
+    results = reader.readtext(image_array)
 
     extracted_text = []
 
