@@ -1,10 +1,9 @@
 import numpy as np
-import streamlit as st
+from functools import lru_cache
 
 
-@st.cache_resource
+@lru_cache(maxsize=1)
 def _get_reader():
-    """Load EasyOCR once and reuse it."""
     import easyocr
 
     return easyocr.Reader(
@@ -15,19 +14,26 @@ def _get_reader():
 
 
 def extract_text(image):
-    """
-    Extract text from an image using EasyOCR.
-    """
+
+    if image is None:
+        return []
 
     image_array = np.array(image)
 
     reader = _get_reader()
 
-    results = reader.readtext(image_array)
+    results = reader.readtext(
+        image_array,
+        detail=1
+    )
 
     extracted_text = []
 
     for detection in results:
+
+        if len(detection) < 3:
+            continue
+
         text = detection[1]
         confidence = detection[2]
 
