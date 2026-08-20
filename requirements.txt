@@ -5,8 +5,3 @@ numpy==2.2.6
 Pillow==11.3.0
 opencv-python-headless==4.10.0.84
 reportlab==4.2.0
-transformers==4.57.1
-
---extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.7.1+cpu
-torchvision==0.22.1+cpu
